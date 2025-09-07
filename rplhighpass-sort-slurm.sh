@@ -5,6 +5,11 @@
 #SBATCH --cpus-per-task=1
 #SBATCH --time=2:00:00
 
+/data/miniconda3/bin/conda init
+source ~/.bashrc
+envarg=`/data/src/PyHipp/envlist.py`
+conda activate $envarg
+
 python -u -c "import PyHipp as pyh; \
 import time; \
 t0 = time.time(); \
@@ -16,4 +21,7 @@ from PyHipp import export_mountain_cells; \
 export_mountain_cells.export_mountain_cells(); \
 print(time.localtime()); \
 print(time.time()-t0);"
+
+conda deactivate 
+/data/src/PyHipp/envlist.py $envarg
 
