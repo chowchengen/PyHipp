@@ -25,7 +25,7 @@ elif nargs > 2:
     # get prefix for environment name
     envprefix = sys.argv[1]
     # get number of environments to create
-    nenvs = sys.argv[2]
+    nenvs = int(sys.argv[2])
 elif nargs > 1:
     # returns env to the list of environments
     pmode = WRITE_MODE
@@ -40,21 +40,23 @@ lock = FileLock(lock_path, timeout=time_out_secs)
 
 with lock:
     if pmode == RESET_MODE:
-        # create a list (named clist) of nevns environments with the 
-        # prefix envprefix
-        # add code here
+        # create a list (named clist) of nenvs environments with the prefix envprefix
+        clist = [f"{envprefix}{i}" for i in range(nenvs)]
+
     else:
         # load hickle file
         clist = hickle.load(file_path)
 
         if pmode == WRITE_MODE:
             # append item to end of list
-            # add code here
+            clist.append(env)
+
         else:    
             # get and remove env from clist
-            # add code here
+            env = clist.pop(0)
             # return env name
             print(env)
 
     # save hickle file
     hickle.dump(clist, file_path, mode="w")
+
